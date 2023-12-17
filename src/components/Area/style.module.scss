@@ -1,0 +1,21 @@
+$width-cell: 48px;
+$indent: 1px;
+$width-cell-without-indent: $width-cell - $indent;
+
+.area {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.stroke {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.cell {
+  background-color: #4a4a4a;
+  border: $indent solid #2d2d2d;
+  width: $width-cell-without-indent;
+}
