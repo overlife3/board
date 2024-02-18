@@ -1,0 +1,68 @@
+@import "../../styles/mixins.scss";
+
+.top_menu {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  @include border_2(4px, var(--gray-light), var(--gray-dark));
+  .auto_flag_mode {
+    height: 40px;
+    width: 40px;
+    box-sizing: border-box;
+    border: 1px solid #000000;
+    background-color: var(--gray);
+    cursor: pointer;
+    padding: 0;
+    .content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+      height: 100%;
+      width: 100%;
+      @include border(4px, var(--gray-light), var(--gray-dark));
+      img {
+        height: 80%;
+      }
+    }
+
+    &:active {
+      .content {
+        border-color: var(--gray);
+      }
+    }
+  }
+
+  .counter {
+    display: flex;
+    gap: 8px;
+
+    .face {
+      height: 40px;
+      width: 40px;
+      box-sizing: border-box;
+      border: 1px solid #000000;
+      background-color: var(--gray);
+      cursor: pointer;
+      padding: 0;
+      .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+        height: 100%;
+        width: 100%;
+        @include border(4px, var(--gray-light), var(--gray-dark));
+        img {
+          height: 80%;
+        }
+      }
+
+      &:active {
+        .content {
+          border-color: var(--gray);
+        }
+      }
+    }
+  }
+}

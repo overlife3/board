@@ -10,24 +10,47 @@ type State = {
 
 const initialState: State = {
   arr: null,
-  width: 20,
-  height: 15,
-  countBomb: 60,
+  width: 10,
+  height: 10,
+  countBomb: 10,
 };
 
 const areaReducer = createSlice({
   name: "areaReducer",
   initialState: initialState,
+
   reducers: {
+    setSettings: (
+      state,
+      action: PayloadAction<{
+        width: number;
+        height: number;
+        countBomb: number;
+      }>
+    ) => {
+      const { width, height, countBomb } = action.payload;
+      state.height = height;
+      state.width = width;
+      state.countBomb = countBomb;
+    },
     setArr: (state, action: PayloadAction<MapMine>) => {
       state.arr = action.payload;
     },
-    toggleMarkedCell: (state, action: PayloadAction<[number, number]>) => {
+    setMarkedCell: (state, action: PayloadAction<[number, number]>) => {
       if (state.arr) {
         const [x, y] = action.payload;
-        state.arr[x][y].isMarked = !state.arr[x][y].isMarked;
+        state.arr[x][y].isMarked = true;
+        state.countBomb -= 1;
       }
     },
+    removeMarkedCell: (state, action: PayloadAction<[number, number]>) => {
+      if (state.arr) {
+        const [x, y] = action.payload;
+        state.arr[x][y].isMarked = false;
+        state.countBomb += 1;
+      }
+    },
+
     setOpenedCell: (state, action: PayloadAction<[number, number]>) => {
       if (state.arr) {
         const [x, y] = action.payload;

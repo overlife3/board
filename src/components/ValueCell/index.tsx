@@ -6,6 +6,7 @@ import { useAppSelector } from "../../hooks/useAppSelector";
 import { MapMine } from "../../types/area";
 import { actions } from "../../redux/reducers/area";
 import { clickValueCell } from "../../utils/area";
+import _ from "lodash";
 
 type Props = { cell: TypeValueCell };
 
@@ -16,7 +17,8 @@ function ValueCell({ cell }: Props) {
   // обработка собыитя нажатия на ячейку с цифрой
   const onClick = () => {
     const coordinates: Coordinates = [cell.x, cell.y];
-    dispatch(actions.openCells(clickValueCell(coordinates, mapMine)));
+    let arr = _.cloneDeep(mapMine);
+    dispatch(actions.openCells(clickValueCell(coordinates, arr)));
   };
   return <Cell cell={cell} handleClick={onClick} />;
 }

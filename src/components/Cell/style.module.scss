@@ -1,3 +1,4 @@
+@import "../../styles/mixins.scss";
 $width: 48px;
 $border: $width * (7 / 48);
 $indent: 2px;
@@ -10,10 +11,7 @@ $indent: 2px;
   box-sizing: border-box;
   width: $width;
   height: $width;
-  border-left: solid $border #7f807f;
-  border-top: solid $border #7f807f;
-  border-right: solid $border #3d3d3d;
-  border-bottom: solid $border #3d3d3d;
+  @include border($border, var(--gray-light), var(--gray-dark-2));
   background-color: #5f5f5f;
   cursor: pointer;
   font-size: 0;

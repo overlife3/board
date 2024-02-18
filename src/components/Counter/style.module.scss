@@ -1,0 +1,18 @@
+.counter {
+  display: flex;
+  gap: 2px;
+  height: 40px;
+  box-sizing: border-box;
+  width: min-content;
+  background-color: var(--gray-dark);
+  padding: 2px;
+
+  span {
+    height: 100%;
+    width: 20px;
+    text-align: center;
+    img {
+      height: 100%;
+    }
+  }
+}

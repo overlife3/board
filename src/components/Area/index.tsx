@@ -8,10 +8,7 @@ import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { createStartArea } from "../../utils/area";
 import { actions } from "../../redux/reducers/area";
 import StartCell from "../StartCell";
-
-type Props = {
-  arr: MapMine | null;
-};
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 type StrokeProps = {
   strokeArr: any[];
@@ -36,13 +33,14 @@ const StrokeCells = ({ strokeArr }: StrokeProps) => {
   );
 };
 
-const Area = ({ arr }: Props) => {
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    console.log(1);
-    const arr = createStartArea(20, 15); // чтобы не показывать пустую область
-    dispatch(actions.setArr(arr));
-  }, []);
+const Area = () => {
+  // const dispatch = useAppDispatch();
+  // const { width, height } = useAppSelector((store) => store.area);
+  const arr = useAppSelector((store) => store.area.arr);
+  // useEffect(() => {
+  //   const arr = createStartArea(width, height); // чтобы не показывать пустую область
+  //   dispatch(actions.setArr(arr));
+  // }, []);
   if (!arr) return <h1>Задайте параметры</h1>;
   return (
     <div className={style.area}>

@@ -1,0 +1,13 @@
+@mixin border($border, $color-light, $color-dark) {
+  border-left: solid $border $color-light;
+  border-top: solid $border $color-light;
+  border-right: solid $border $color-dark;
+  border-bottom: solid $border $color-dark;
+}
+
+@mixin border_2($border, $color-light, $color-dark) {
+  border-left: solid $border $color-dark;
+  border-top: solid $border $color-dark;
+  border-right: solid $border $color-light;
+  border-bottom: solid $border $color-light;
+}

@@ -157,6 +157,22 @@ export const createStartArea = (width: number, height: number): MapMine => {
   return startArea;
 };
 
+const checkEmptyCell = (arrCoordinates: Coordinates[], mapMine: MapMine) => {
+  let arr: Coordinates[] = arrCoordinates;
+  for (let coordinates of arrCoordinates) {
+    const [x, y] = coordinates;
+    const cell = mapMine[x][y];
+    if (cell.type === "empty") {
+      arr.push(...clickEmptyCell(coordinates, mapMine));
+      console.log("empty");
+
+      break;
+    }
+  }
+
+  return arr;
+};
+
 export const clickValueCell = (
   coordinates: Coordinates,
   mapMine: MapMine
@@ -188,7 +204,9 @@ export const clickValueCell = (
     }
   }
   if (cell.value === countMarked) {
-    return arrCoordinates;
+    const res = checkEmptyCell(arrCoordinates, mapMine);
+    console.log(res);
+    return res;
   } else {
     return [];
   }
@@ -202,7 +220,6 @@ export const clickEmptyCell = (
   // если попадаю на число возвращаю только координаты этого числа
   const [x, y] = coordinates;
   const arrCoordinates = [];
-
   for (let i = -1; i <= 1; i++) {
     for (let j = -1; j <= 1; j++) {
       let indexStrokeConsidered = y + j;
@@ -229,7 +246,6 @@ export const clickEmptyCell = (
             // если ячейка уже открыта, то ее проверять не нужно
             mapMine[indexColumnConsidered][indexStrokeConsidered].isOpened =
               true;
-            // break;
             arrCoordinates.push(
               currentCoordinates,
               ...clickEmptyCell(currentCoordinates, mapMine)

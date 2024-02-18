@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { AnyCell } from "../../types/cell";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { actions } from "../../redux/reducers/area";
+import { useAppSelector } from "../../hooks/useAppSelector";
 
 type Props = {
   cell: AnyCell;
@@ -11,6 +12,7 @@ type Props = {
 };
 
 const Cell = ({ cell, handleClick }: Props) => {
+  const countBomb = useAppSelector((store) => store.area.countBomb);
   const dispatch = useAppDispatch();
   const x = cell.x;
   const y = cell.y;
@@ -29,7 +31,13 @@ const Cell = ({ cell, handleClick }: Props) => {
   //
   const onContextMenu: React.MouseEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
-    if (!cell.isOpened) dispatch(actions.toggleMarkedCell([x, y]));
+    if (!cell.isOpened) {
+      if (cell.isMarked) {
+        dispatch(actions.removeMarkedCell([x, y]));
+      } else {
+        if (countBomb > 0) dispatch(actions.setMarkedCell([x, y]));
+      }
+    }
   };
 
   const styleCell: React.CSSProperties = {};
