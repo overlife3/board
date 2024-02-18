@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import style from "./style.module.scss";
 import MarineImg from "../../img/marine.png";
 import { settingMode } from "../../constant/settings";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { actions } from "../../redux/reducers/area";
+import { actions as actionsStatistics } from "../../redux/reducers/statistics";
 import { createStartArea } from "../../utils/area";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import { TimerContext } from "../../context/timer";
 
 type TypeMode = "easy" | "medium" | "hard" | "extreme";
 const titleByType = {
@@ -52,7 +55,12 @@ type Props = {
 
 const Menu = ({ setVisible }: Props) => {
   const dispatch = useAppDispatch();
+  const isStart = useAppSelector((store) => store.statistics.isStart);
   const [checkedType, setCheckedType] = useState<TypeMode | null>(null);
+  const timerContextData = useContext(TimerContext);
+
+  if (!timerContextData) return null;
+  const { handleReset } = timerContextData;
 
   const handleStart = () => {
     if (checkedType) {
@@ -61,10 +69,13 @@ const Menu = ({ setVisible }: Props) => {
       const arr = createStartArea(width, height); // чтобы не показывать пустую область
       dispatch(actions.setArr(arr));
       setVisible(false);
+      dispatch(actionsStatistics.startNewPlay());
+      handleReset();
     }
   };
   const handleCancel = () => {
     setVisible(false);
+    if (isStart) dispatch(actionsStatistics.setIsPause(false));
   };
 
   return (

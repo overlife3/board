@@ -4,6 +4,8 @@ import clsx from "clsx";
 import { AnyCell } from "../../types/cell";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { actions } from "../../redux/reducers/area";
+import { actions as actionsStatistics } from "../../redux/reducers/statistics";
+
 import { useAppSelector } from "../../hooks/useAppSelector";
 
 type Props = {
@@ -13,6 +15,7 @@ type Props = {
 
 const Cell = ({ cell, handleClick }: Props) => {
   const countBomb = useAppSelector((store) => store.area.countBomb);
+  const isStart = useAppSelector((store) => store.statistics.isStart);
   const dispatch = useAppDispatch();
   const x = cell.x;
   const y = cell.y;
@@ -25,7 +28,10 @@ const Cell = ({ cell, handleClick }: Props) => {
   });
 
   const openCell = () => {
-    if (!cell.isMarked) dispatch(actions.setOpenedCell([x, y]));
+    if (!cell.isMarked) {
+      dispatch(actions.setOpenedCell([x, y]));
+      dispatch(actionsStatistics.setIsStart(true));
+    }
   };
 
   //

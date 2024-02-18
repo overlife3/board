@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import area from "./reducers/area";
+import statistics from "./reducers/statistics";
 
 const rootReducer = combineReducers({
   area: area,
+  statistics: statistics,
 });
 
 const store = configureStore({

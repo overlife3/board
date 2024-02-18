@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import style from "./style.module.scss";
 import flagImg from "../../img/mine.png";
 import Counter from "../Counter";
@@ -6,12 +6,32 @@ import faceImage from "../../img/face.png";
 import { TimerContext, TimerContextProvider } from "../../context/timer";
 import Menu from "../Menu";
 import { useAppSelector } from "../../hooks/useAppSelector";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { actions } from "../../redux/reducers/statistics";
 type Props = {};
 
 const TopMenu = (props: Props) => {
   const countBomb = useAppSelector((store) => store.area.countBomb);
+  const { isStart, isPause, isWinning, isDefeat } = useAppSelector(
+    (store) => store.statistics
+  );
+  const dispatch = useAppDispatch();
   const timerContextData = useContext(TimerContext);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+
+  useEffect(() => {
+    if (isStart && handleStart) handleStart();
+  }, [isStart]);
+
+  useEffect(() => {
+    if (isPause && !isWinning && !isDefeat && handlePause) handlePause();
+    if (!isPause && !isWinning && !isDefeat && isStart && handleResume)
+      handleResume();
+  }, [isPause]);
+
+  useEffect(() => {
+    if ((isWinning || isDefeat) && handleReset) handleReset();
+  }, [isWinning, isDefeat]);
 
   if (!timerContextData) return null;
   const {
@@ -26,13 +46,9 @@ const TopMenu = (props: Props) => {
 
   const handleFace = () => {
     setIsMenuVisible((prevState) => !prevState);
-    handlePause();
+    dispatch(actions.setIsPause(true));
   };
-
-  const handleFlag = () => {
-    handleStart();
-  };
-
+  const handleFlag = () => {};
   return (
     <>
       <div className={style.top_menu}>

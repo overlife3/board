@@ -1,0 +1,14 @@
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--gray-dark);
+  // height: ;
+  box-sizing: border-box;
+  .content {
+    padding: 20px;
+  }
+  .empty_elem {
+    height: 100vh;
+  }
+}
