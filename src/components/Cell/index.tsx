@@ -15,7 +15,7 @@ type Props = {
 
 const Cell = ({ cell, handleClick }: Props) => {
   const countBomb = useAppSelector((store) => store.area.countBomb);
-  const isStart = useAppSelector((store) => store.statistics.isStart);
+  const { mode } = useAppSelector((store) => store.statistics);
   const dispatch = useAppDispatch();
   const x = cell.x;
   const y = cell.y;
@@ -28,13 +28,22 @@ const Cell = ({ cell, handleClick }: Props) => {
   });
 
   const openCell = () => {
-    if (!cell.isMarked) {
-      dispatch(actions.setOpenedCell([x, y]));
-      dispatch(actionsStatistics.setIsStart(true));
+    if (mode === "default") {
+      if (!cell.isMarked) {
+        dispatch(actions.setOpenedCell([x, y]));
+        dispatch(actionsStatistics.setIsStart(true));
+      }
+    } else {
+      if (!cell.isOpened) {
+        if (cell.isMarked) {
+          dispatch(actions.removeMarkedCell([x, y]));
+        } else {
+          dispatch(actions.setMarkedCell([x, y]));
+        }
+      }
     }
   };
 
-  //
   const onContextMenu: React.MouseEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
     if (!cell.isOpened) {
@@ -54,7 +63,7 @@ const Cell = ({ cell, handleClick }: Props) => {
 
   const onClick = () => {
     openCell();
-    if (handleClick) handleClick();
+    if (mode === "default" && handleClick) handleClick();
   };
 
   return (

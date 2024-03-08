@@ -6,3 +6,5 @@ export enum Colors {
   yellow = "#e2ca1f",
   lilac = "#029c9c",
 }
+
+export type Mode = "default" | "flag";

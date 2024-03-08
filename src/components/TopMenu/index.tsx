@@ -8,11 +8,12 @@ import Menu from "../Menu";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { actions } from "../../redux/reducers/statistics";
+import clsx from "clsx";
 type Props = {};
 
 const TopMenu = (props: Props) => {
   const countBomb = useAppSelector((store) => store.area.countBomb);
-  const { isStart, isPause, isWinning, isDefeat } = useAppSelector(
+  const { isStart, isPause, isWinning, isDefeat, mode } = useAppSelector(
     (store) => store.statistics
   );
   const dispatch = useAppDispatch();
@@ -48,12 +49,19 @@ const TopMenu = (props: Props) => {
     setIsMenuVisible((prevState) => !prevState);
     dispatch(actions.setIsPause(true));
   };
-  const handleFlag = () => {};
+  const handleFlag = () => {
+    if (mode === "default") dispatch(actions.setMode("flag"));
+    else dispatch(actions.setMode("default"));
+  };
+
+  const autoFlagModeCn = clsx(style.auto_flag_mode, {
+    [style.flagMode]: mode === "flag",
+  });
   return (
     <>
       <div className={style.top_menu}>
         <div className={style.btns}>
-          <button className={style.auto_flag_mode} onClick={handleFlag}>
+          <button className={autoFlagModeCn} onClick={handleFlag}>
             <span className={style.content}>
               <img src={flagImg} alt="" />
             </span>

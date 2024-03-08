@@ -39,8 +39,10 @@ const areaReducer = createSlice({
     setMarkedCell: (state, action: PayloadAction<[number, number]>) => {
       if (state.arr) {
         const [x, y] = action.payload;
-        state.arr[x][y].isMarked = true;
-        state.countBomb -= 1;
+        if (state.countBomb > 0) {
+          state.arr[x][y].isMarked = true;
+          state.countBomb -= 1;
+        }
       }
     },
     removeMarkedCell: (state, action: PayloadAction<[number, number]>) => {

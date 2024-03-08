@@ -1,10 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Mode } from "../../types/share";
 
 type State = {
   isDefeat: boolean;
   isWinning: boolean;
   isStart: boolean;
   isPause: boolean;
+  mode: Mode;
 };
 
 const initialState: State = {
@@ -12,6 +14,7 @@ const initialState: State = {
   isWinning: false,
   isStart: false,
   isPause: false,
+  mode: "default",
 };
 
 const statisticsReducer = createSlice({
@@ -35,6 +38,9 @@ const statisticsReducer = createSlice({
       state.isDefeat = initialState.isDefeat;
       state.isStart = initialState.isStart;
       state.isWinning = initialState.isWinning;
+    },
+    setMode(state, action: PayloadAction<Mode>) {
+      state.mode = action.payload;
     },
   },
 });
