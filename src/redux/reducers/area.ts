@@ -6,6 +6,7 @@ type State = {
   width: number;
   height: number;
   countBomb: number;
+  countOpenedCells: number;
 };
 
 const initialState: State = {
@@ -13,9 +14,10 @@ const initialState: State = {
   width: 10,
   height: 10,
   countBomb: 10,
+  countOpenedCells: 0,
 };
 
-const areaReducer = createSlice({
+export const areaReducer = createSlice({
   name: "areaReducer",
   initialState: initialState,
 
@@ -67,6 +69,44 @@ const areaReducer = createSlice({
           state.arr[x][y].isOpened = true;
         }
     },
+  },
+  extraReducers(builder) {
+    builder.addMatcher(
+      (actionsMatch) =>
+        actionsMatch.type.startsWith("areaReducer/openCells") ||
+        actionsMatch.type.startsWith("areaReducer/setOpenedCell"),
+      (state, _) => {
+        const arr = state.arr;
+        console.log(10);
+        if (arr !== null) {
+          let countOpenedCells = 0;
+          for (let i = 0; i < arr.length; i++) {
+            for (let j = 0; j < arr[i].length; j++) {
+              const cell = arr[i][j];
+              if (cell.type !== "bomb" && cell.isOpened === true) {
+                countOpenedCells += 1;
+              }
+            }
+          }
+          state.countOpenedCells = countOpenedCells;
+        }
+      }
+    );
+    // builder.addCase("areaReducer/openCells", (state, _) => {
+    //   const arr = state.arr;
+    //   console.log(10);
+
+    //   if (arr !== null) {
+    //     for (let i = 0; i < arr.length; i++) {
+    //       for (let j = 0; j < arr[i].length; j++) {
+    //         const cell = arr[i][j];
+    //         if (cell.type !== "bomb" && cell.isOpened === true) {
+    //           state.countOpenedCells += 1;
+    //         }
+    //       }
+    //     }
+    //   }
+    // });
   },
 });
 

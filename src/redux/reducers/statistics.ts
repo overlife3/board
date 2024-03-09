@@ -18,7 +18,7 @@ const initialState: State = {
 };
 
 const statisticsReducer = createSlice({
-  name: "areaReducer",
+  name: "statisticsReducer",
   initialState: initialState,
   reducers: {
     setIsStart(state, action: PayloadAction<boolean>) {
