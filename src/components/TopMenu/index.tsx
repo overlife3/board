@@ -3,33 +3,34 @@ import style from "./style.module.scss";
 import flagImg from "../../img/mine.png";
 import Counter from "../Counter";
 import faceImage from "../../img/face.png";
-import { TimerContext, TimerContextProvider } from "../../context/timer";
+import { TimerContext } from "../../context/timer";
 import Menu from "../Menu";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { actions } from "../../redux/reducers/statistics";
+import { actions as actionsArea } from "../../redux/reducers/area";
 import clsx from "clsx";
+import { count } from "console";
 type Props = {};
 
 const TopMenu = (props: Props) => {
-  const countBomb = useAppSelector((store) => store.area.countBomb);
+  const { countBomb, countMarkedBomb, countOpenedCells, height, width } =
+    useAppSelector((store) => store.area);
   const { isStart, isPause, isWinning, isDefeat, mode } = useAppSelector(
     (store) => store.statistics
   );
   const dispatch = useAppDispatch();
   const timerContextData = useContext(TimerContext);
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
   useEffect(() => {
     if (isStart && handleStart) handleStart();
   }, [isStart]);
-
   useEffect(() => {
     if (isPause && !isWinning && !isDefeat && handlePause) handlePause();
     if (!isPause && !isWinning && !isDefeat && isStart && handleResume)
       handleResume();
   }, [isPause]);
-
   useEffect(() => {
     if ((isWinning || isDefeat) && handleReset) handleReset();
   }, [isWinning, isDefeat]);
@@ -44,6 +45,10 @@ const TopMenu = (props: Props) => {
     isPaused,
     timer,
   } = timerContextData;
+
+  if (countOpenedCells === width * height - countBomb) {
+    dispatch(actions.setIsWinning(true));
+  }
 
   const handleFace = () => {
     setIsMenuVisible((prevState) => !prevState);
@@ -74,7 +79,7 @@ const TopMenu = (props: Props) => {
               <img src={faceImage} alt="" />
             </span>
           </button>
-          <Counter num={countBomb} />
+          <Counter num={countBomb - countMarkedBomb} />
         </div>
         <div className={style.empty_elem}></div>
       </div>
